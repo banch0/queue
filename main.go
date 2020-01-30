@@ -55,7 +55,6 @@ func (p *Queue) Last() string {
 // Remove ...
 func (p *Queue) Remove() error {
 	if p.length == 0 {
-		fmt.Printf("Queue is empty")
 		return nil
 	}
 
