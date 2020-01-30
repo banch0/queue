@@ -53,7 +53,7 @@ func (p *Queue) Last() interface{} {
 }
 
 // Remove ...
-func (p *Queue) Remove() error {
+func (p *Queue) Remove() *Node {
 	if p.length == 0 {
 		return nil
 	}
@@ -61,8 +61,7 @@ func (p *Queue) Remove() error {
 	p.length--
 
 	if p.head.next == nil {
-		p.head = nil
-		return nil
+		return p.head
 	}
 
 	currentNode := p.head
@@ -71,7 +70,7 @@ func (p *Queue) Remove() error {
 	previous.next = currentNode.next
 	p.head = currentNode
 	p.head.previous = nil
-	return nil
+	return previous
 }
 
 // Insert ...
