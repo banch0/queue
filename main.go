@@ -75,8 +75,8 @@ func (p *Queue) Remove() error {
 }
 
 // Insert ...
-func (p *Queue) Insert(d Node) bool {
-	newNode := &d
+func (p *Queue) Insert(name, priority string) bool {
+	newNode := &Node{name: name, priority: priority}
 	p.length++
 	if newNode.priority == "vip" {
 		if p.head.priority == "vip" {
@@ -89,7 +89,6 @@ func (p *Queue) Insert(d Node) bool {
 		p.head.previous = newNode
 		p.head = newNode
 		return true
-
 	}
 
 	if p.head != nil {
