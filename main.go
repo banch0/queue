@@ -6,7 +6,7 @@ import (
 
 // Node ..
 type Node struct {
-	name     string
+	name     interface{}
 	priority string
 	previous *Node
 	next     *Node
@@ -41,13 +41,13 @@ func (p *Queue) showAllQueues() error {
 }
 
 // First ...
-func (p *Queue) First() string {
+func (p *Queue) First() interface{} {
 	p.nowInQueue = p.head
 	return p.nowInQueue.name
 }
 
 // Last ...
-func (p *Queue) Last() string {
+func (p *Queue) Last() interface{} {
 	p.nowInQueue = p.tail
 	return p.nowInQueue.name
 }
