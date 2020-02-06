@@ -6,7 +6,7 @@ import (
 
 // Node ..
 type Node struct {
-	name     interface{}
+	value    interface{}
 	priority string
 	previous *Node
 	next     *Node
@@ -43,17 +43,17 @@ func (p *Queue) showAllQueues() error {
 // First ...
 func (p *Queue) First() interface{} {
 	p.nowInQueue = p.head
-	return p.nowInQueue.name
+	return p.nowInQueue.value
 }
 
 // Last ...
 func (p *Queue) Last() interface{} {
 	p.nowInQueue = p.tail
-	return p.nowInQueue.name
+	return p.nowInQueue.value
 }
 
 // Remove ...
-func (p *Queue) Remove() *Node {
+func (p *Queue) Remove() interface{} {
 	if p.length == 0 {
 		return nil
 	}
@@ -70,37 +70,34 @@ func (p *Queue) Remove() *Node {
 	previous.next = currentNode.next
 	p.head = currentNode
 	p.head.previous = nil
-	return previous
+	return previous.value
 }
 
 // Insert ...
-func (p *Queue) Insert(name, priority string) bool {
-	newNode := &Node{name: name, priority: priority}
+func (p *Queue) Insert(value interface{}, priority string) bool {
+	newNode := &Node{
+		value:    value,
+		priority: priority,
+	}
 	p.length++
+
+	if p.head == nil {
+		p.head = newNode
+	} else {
+		current := p.tail
+		current.next = newNode
+		newNode.previous = p.tail
+	}
+
 	if newNode.priority == "vip" {
-		if p.head.priority == "vip" {
-			newNode.next = p.head.next
-			p.head.next = newNode
-			newNode.previous = p.head
-			return true
-		}
 		newNode.next = p.head
 		p.head.previous = newNode
 		p.head = newNode
 		return true
 	}
 
-	if p.head != nil {
-		current := p.tail
-		current.next = newNode
-		newNode.previous = p.tail
-	} else {
-		p.head = newNode
-	}
-
 	p.tail = newNode
 	return true
 }
 
-// Main ...
 func main() {}
