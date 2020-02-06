@@ -73,7 +73,7 @@ func (p *Queue) Remove() interface{} {
 	return previous.value
 }
 
-// Insert ...
+// Insert adding any value to queue
 func (p *Queue) Insert(value interface{}, priority string) bool {
 	newNode := &Node{
 		value:    value,
