@@ -42,12 +42,18 @@ func (p *Queue) showAllQueues() error {
 
 // First ...
 func (p *Queue) First() interface{} {
+	if p.head == nil {
+		return nil
+	}
 	p.nowInQueue = p.head
 	return p.nowInQueue.value
 }
 
 // Last ...
 func (p *Queue) Last() interface{} {
+	if p.head == nil {
+		return nil
+	}
 	p.nowInQueue = p.tail
 	return p.nowInQueue.value
 }
@@ -73,7 +79,7 @@ func (p *Queue) Remove() interface{} {
 	return previous.value
 }
 
-// Insert adding any value to queue
+// Insert insert interface value to value of
 func (p *Queue) Insert(value interface{}, priority string) bool {
 	newNode := &Node{
 		value:    value,

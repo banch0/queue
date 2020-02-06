@@ -4,55 +4,99 @@ import (
 	"testing"
 )
 
-func Test_empty_list(t *testing.T) {
+func TestEmptyList(t *testing.T) {
 	q := CreateQueue()
 	if q.length != 0 {
-		t.Error("new list length must be zero, got: ", q.length)
+		t.Error("New queue length must be zero, but got: ", q.length)
+	}
+
+	first := q.First()
+	if q.First() != first {
+		t.Error("First element of empty queue must be nil, got: ", first)
+	}
+
+	last := q.Last()
+	if q.Last() != last {
+		t.Error("Last element of empty queue must be nil, got: ", last)
+	}
+
+	remove := q.Remove()
+	if q.Remove() != remove {
+		t.Error("Remove from empty list must be nil, got: ", remove)
+	}
+
+	queueNumber := 0001
+	q.Insert(queueNumber, "simple")
+
+	if q.length != 1 {
+		t.Error("queue length mus be 1 but, got: ", q.length)
 	}
 }
 
-func Test_remove_client(t *testing.T) {
+func TestRemoveClient(t *testing.T) {
 	q := CreateQueue()
 
-	q.Insert(Node{
-		name:     "Bob",
-		priority: "simple",
-	})
 	q.Remove()
+	if q.Remove() != nil {
+		t.Error("Error: expected nil")
+	}
+
+	client := struct {
+		name    string
+		account int
+	}{
+		name:    "Bob",
+		account: 12345678,
+	}
+
+	q.Insert(client, "vip")
+
+	remove := q.Remove()
+
+	if remove != client {
+		t.Error("Return removing element error")
+	}
+
 	if q.length != 0 {
 		t.Error("remove function don't work")
 	}
 }
 
-func Test_list_with_one_item(t *testing.T) {
+func TestWithOneItem(t *testing.T) {
 	q := CreateQueue()
-	sec := &Node{
-		name:     "Bob",
-		priority: "simple",
+	c := struct {
+		name    string
+		account int64
+	}{
+		name:    "Bob",
+		account: 23454543,
 	}
-	q.Insert(*sec)
+
+	q.Insert(c, "simple")
+
 	if q.length != 1 {
 		t.Error("after adding one element size must be 1, got: ", q.length)
 	}
+
+	first := q.First()
+	last := q.Last()
+
+	if first != last {
+		t.Error("first != last")
+	}
+
+	q.Remove()
+
+	if q.length != 0 {
+		t.Error("After removing elements, size must be 0, but got: ", q.length)
+	}
 }
 
-func Test_list_with_multiple_items(t *testing.T) {
+func TestMultipleItems(t *testing.T) {
 	q := CreateQueue()
-	fir := &Node{
-		name:     "Marla",
-		priority: "simple",
-	}
-	q.Insert(*fir)
-	sec := &Node{
-		name:     "Bob",
-		priority: "simple",
-	}
-	q.Insert(*sec)
-	thi := &Node{
-		name:     "Tyler",
-		priority: "vip",
-	}
-	q.Insert(*thi)
+	q.Insert(1, "simple")
+	q.Insert(2, "vip")
+	q.Insert(3, "simple")
 	if q.length != 3 {
 		t.Error("after adding 3 elements size must be 3, got: ", q.length)
 	}
@@ -60,32 +104,31 @@ func Test_list_with_multiple_items(t *testing.T) {
 
 func TestVipClient(t *testing.T) {
 	q := CreateQueue()
-	Marla := &Node{
-		name:     "Marla",
-		priority: "simple",
+	Marla := struct {
+		name    string
+		account int64
+	}{
+		name:    "Marla",
+		account: 23453,
 	}
-	q.Insert(*Marla)
-	Bob := &Node{
-		name:     "Bob",
-		priority: "simple",
+	q.Insert(Marla, "simple")
+	Bob := struct {
+		name    string
+		account int64
+	}{
+		name:    "Bob",
+		account: 23454,
 	}
-	q.Insert(*Bob)
-	Tyler := &Node{
-		name:     "Tyler",
-		priority: "vip",
+	q.Insert(Bob, "simple")
+	Tyler := struct {
+		name    string
+		account int64
+	}{
+		name:    "Tyler",
+		account: 23455,
 	}
-	q.Insert(*Tyler)
-	Tyler2 := &Node{
-		name:     "Tyler2",
-		priority: "vip",
-	}
-	q.Insert(*Tyler2)
-	Tyler3 := &Node{
-		name:     "Tyler3",
-		priority: "vip",
-	}
-	q.Insert(*Tyler3)
-	// q.showAllQueues()
+	q.Insert(Tyler, "vip")
+
 	if q.head.priority != "vip" {
 		t.Error("vip client not inserted to start of queue")
 	}
@@ -93,16 +136,24 @@ func TestVipClient(t *testing.T) {
 
 func TestFirst(t *testing.T) {
 	q := CreateQueue()
-	q.Insert(Node{name: "Bob", priority: "simple"})
-	if q.First() != "Bob" {
-		t.Error("First element name must be Bob, got: ", q.nowInQueue.name)
+	value := struct{ name string }{name: "Bob"}
+
+	q.Insert(value, "vip")
+
+	if q.First() != value {
+		t.Errorf("First element must be equal to %v, but got %v: ", value, q.First()) //q.nowInQueue.name
+
 	}
 }
 
 func TestLast(t *testing.T) {
 	q := CreateQueue()
-	q.Insert(Node{name: "Bob", priority: "simple"})
-	if q.Last() != "Bob" {
-		t.Error("Last element name must be Bob, got: ", q.nowInQueue.name)
+	value := struct{ name string }{name: "Bob"}
+
+	q.Insert(value, "simple")
+
+	if q.Last() != value {
+		t.Errorf("Last element must be equal to %v, but got: %v ", value, q.Last())
+
 	}
 }
