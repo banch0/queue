@@ -80,7 +80,7 @@ func (p *Queue) Remove() interface{} {
 }
 
 // Insert insert interface value to value of
-func (p *Queue) Insert(value interface{}, priority string) bool {
+func (p *Queue) Insert(value interface{}, priority string) {
 	newNode := &Node{
 		value:    value,
 		priority: priority,
@@ -99,11 +99,10 @@ func (p *Queue) Insert(value interface{}, priority string) bool {
 		newNode.next = p.head
 		p.head.previous = newNode
 		p.head = newNode
-		return true
+		return
 	}
 
 	p.tail = newNode
-	return true
 }
 
 func main() {}
